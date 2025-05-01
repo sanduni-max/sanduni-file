@@ -1,0 +1,45 @@
+% Part 1: Visualize Traffic Patterns
+% ===========================
+
+% a. Plot vehicle density vs. time
+figure;
+imagesc(vehicle_data);
+xlabel('Minute');
+ylabel('Hour');
+title('Vehicle Density Heatmap (vehicles/min)');
+colorbar;
+
+% b. Histogram of traffic across the day
+daily_traffic = sum(vehicle_data, 2);
+figure;
+bar(1:total_hours, daily_traffic);
+xlabel('Hour');
+ylabel('Total Vehicles');
+title('Histogram of Traffic Distribution Per Hour');
+grid on;
+
+%part a
+            if vehicle_count > 50
+    green_duration = 30;  % Extend green light for high traffic
+elseif vehicle_count < 10
+    green_duration = 10;  % Shorten green light for low traffic
+else
+    green_duration = 20;  % Default duration
+end
+%part b
+switch emergency_mode
+    case 1
+        fprintf('**EMERGENCY Extend**-->> Ambulance detected — Extending green time.\n');
+        green_duration = green_duration + 10;  % Add extra time for ambulance
+
+    case 2
+        fprintf('**EMERGENCY Extend**-->> Firetruck detected — Setting max green time.\n');
+        green_duration = 50;  % Max duration for firetruck priority
+
+    case 3
+        fprintf('**EMERGENCY Extend**-->> President''s Vehicle detected — Setting green time to 30 mins.\n');
+        green_duration = 30;  % Override with fixed duration for high-priority escort
+
+    otherwise
+        % No emergency, keep duration unchanged
+end
